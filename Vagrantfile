@@ -24,9 +24,11 @@ Vagrant.configure(2) do |config|
   config.vm.define "logstash" do |ls|
     ls.vm.provider "docker" do |d|
       d.image = "ehazlett/logstash"
-      #d.create_args = [
-      #  "-f /etc/logstash.conf.sample"
-      #]
+      # The cmd option appears to work like the create_args option but is output
+      # after the image name.
+      d.cmd = [
+        "-f /etc/logstash.conf.sample"
+      ]
       d.link("es:elasticsearch")
       d.ports = [
         "5000:5000",
@@ -56,9 +58,11 @@ Vagrant.configure(2) do |config|
       d.volumes = [
         "/var/run/docker.sock:/tmp/docker.sock"
       ]
-      #d.create_args = [
-      #  "syslog://" . sudo docker inspect -f '{{ .NetworkSettings.IPAddress }}' . ":5000"
-      #]
+      # The cmd option appears to work like the create_args option but is output
+      # after the image name.
+      d.cmd = [
+        "syslog://" + logstash + ":5000"
+      ]
     end
   end
 
