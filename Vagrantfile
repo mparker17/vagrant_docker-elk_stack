@@ -1,6 +1,11 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+require 'socket'
+
+# Set a default address for the logstash container.
+logstash = Socket.ip_address_list.first.ip_address
+
 Vagrant.configure(2) do |config|
 
   # Set up the Elasticsearch backend container.
@@ -28,6 +33,9 @@ Vagrant.configure(2) do |config|
         "5000:5000/udp"
       ]
     end
+
+    # TODO: Find IP address of the logstash container.
+    # logstash =
   end
 
   # Set up the Kibana front-end container.
